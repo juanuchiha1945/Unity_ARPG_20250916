@@ -1,19 +1,25 @@
 using UnityEngine;
-using System.collections;
+using System.Collections;
 
-/// <summary>
-/// 處理 Canvas Group 畫布群組元件淡入與淡出的系統
-/// </summary>
-public class NewEmptyCSharpScript
+public class FadeSystem : MonoBehaviour
 {
     /// <summary>
-    /// 淡入淡出
+    /// 控制 Canvas Group 淡入或淡出
     /// </summary>
-    /// <param name="Group">畫布群組元件</param>
-    /// <param name="fadein">是否淡入</param>
-    /// <param name="interval">淡入淡出時間間隔</param>
-    public void Fade(CanvasGroup Group, bool fadein = true, float interval = 0.03f)
+    public static IEnumerator Fade(CanvasGroup group, bool fadeIn = true, float interval = 0.03f)
     {
+        // 如果 fadeIn 為 true，就讓透明度每次加 0.1f；否則每次減 0.1f
+        var increase = fadeIn ? +0.1f : -0.1f;
 
+        // 進行 10 次的淡入或淡出
+        for (int i = 0; i < 10; i++)
+        {
+            group.alpha += increase;                     // 調整透明度
+            yield return new WaitForSeconds(interval);   // 等待指定的時間間隔
+        }
+
+        // 最後設定互動與遮擋射線
+        group.interactable = fadeIn;
+        group.blocksRaycasts = fadeIn;
     }
 }

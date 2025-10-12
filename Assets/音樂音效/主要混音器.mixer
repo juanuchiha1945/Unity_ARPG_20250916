@@ -16,7 +16,7 @@ AudioMixerGroupController:
   m_Effects:
   - {fileID: 3703840808022968864}
   m_UserColorIndex: 0
-  m_Mute: 0
+  m_Mute: 1
   m_Solo: 0
   m_BypassEffects: 0
 --- !u!241 &24100000
@@ -35,12 +35,12 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
-  - guid: 840c91b2b8f1b7f4b8ce172d115858fe
+  - guid: 98fcc1b88e9060645b71d223d570a6fa
     name: VolumeBGM
   - guid: fe9931bf6f53ac340b5bedf503652183
     name: VolumeMaster
-  - guid: 931dde697c13c1946a914bc014b77fc4
-    name: MyExposedParam 2
+  - guid: 0bf13f0c8210cc84bb5428e085662dbc
+    name: VolumeSFX
   m_AudioMixerGroupViews:
   - guids:
     - 41dbd38b4183e374fb320b3672de91e5
