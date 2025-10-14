@@ -31,5 +31,14 @@ public class MainMenuManager : MonoBehaviour
         btnBackOption.onClick.AddListener(() => StartCoroutine(FadeSystem.Fade(groupOption, false)));
         btnCredit.onClick.AddListener(() => StartCoroutine(FadeSystem.Fade(groupCredit, interval: 0.05f)));
         btnBackCredit.onClick.AddListener(() => StartCoroutine(FadeSystem.Fade(groupCredit, false)));
+        // 點擊退出按鈕時，退出應用程式
+        // Application.Quit() 會在編輯器中停止播放模式，在打包後的應用程式中退出應用程式
+        btnQuit.onClick.AddListener(() =>
+        {
+            Application.Quit();
+            Debug.Log("<color=#ff3>退出遊戲</color>");
+        });
+        // 點即開始遊戲按鈕時，載入遊戲場景
+        btnNew.onClick.AddListener(() => SceneLoader.instacne.LoadSceneAsync("遊戲場景"));
     }
 }
