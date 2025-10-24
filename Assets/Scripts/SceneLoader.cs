@@ -1,22 +1,22 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 
 public class SceneLoader : MonoBehaviour
 {
-    // ³æ¨Ò¼Ò¦¡ Singleton Pattern
-    // ¨Ï¥Î®É¾÷ : ·í¦¹¸}¥»¥u¦³¤@­Ó¹êÅéª«¥ó®É¡A¨Ã¥B¨ä¥L¸}¥»»İ­nÀò±o³o­Ó¸}¥»®É
-    // ¥Î¨Ó¦s©ñ¸ê®ÆªºÀRºAÅÜ¼Æ
+    // å–®ä¾‹æ¨¡å¼ Singleton Pattern
+    // ä½¿ç”¨æ™‚æ©Ÿ : ç•¶æ­¤è…³æœ¬åªæœ‰ä¸€å€‹å¯¦é«”ç‰©ä»¶æ™‚ï¼Œä¸¦ä¸”å…¶ä»–è…³æœ¬éœ€è¦ç²å¾—é€™å€‹è…³æœ¬æ™‚
+    // ç”¨ä¾†å­˜æ”¾è³‡æ–™çš„éœæ…‹è®Šæ•¸
     private static SceneLoader _instance;
-    // °ßÅªÄİ©Ê : Åı¥~³¡¨úªº¦¹¸ê®Æµ¡¤f
+    // å”¯è®€å±¬æ€§ : è®“å¤–éƒ¨å–çš„æ­¤è³‡æ–™çª—å£
     public static SceneLoader instacne
     { 
         get
         {
-            if (_instance == null)                              // ¦pªG¹êÅéª«¥ó¤£¦s¦b
-                _instance = FindAnyObjectByType<SceneLoader>(); // ¹Á¸Õ´M§ä³õ´º¤¤ªº¹êÅéª«¥ó
-            return _instance;                                   // ¦^¶Ç¹êÅéª«¥ó
+            if (_instance == null)                              // å¦‚æœå¯¦é«”ç‰©ä»¶ä¸å­˜åœ¨
+                _instance = FindAnyObjectByType<SceneLoader>(); // å˜—è©¦å°‹æ‰¾å ´æ™¯ä¸­çš„å¯¦é«”ç‰©ä»¶
+            return _instance;                                   // å›å‚³å¯¦é«”ç‰©ä»¶
         } 
     }
     [Header("UI Components")]
@@ -25,31 +25,31 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private CanvasGroup group;
 
     /// <summary>
-    /// ¶}©l«D¦P¨B¸ü¤J³õ´º
+    /// é–‹å§‹éåŒæ­¥è¼‰å…¥å ´æ™¯
     /// </summary>
-    /// <param name="sceneName">³õ´º¦WºÙ</param>
+    /// <param name="sceneName">å ´æ™¯åç¨±</param>
     public void LoadSceneAsync(string sceneName)
     {
-        StartCoroutine(LoadSceneCoroutine(sceneName));          // ±Ò°Ê¨óµ{¨Ó¸ü¤J³õ´º
+        StartCoroutine(LoadSceneCoroutine(sceneName));          // å•Ÿå‹•å”ç¨‹ä¾†è¼‰å…¥å ´æ™¯
     }
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
-        yield return StartCoroutine(FadeSystem.Fade(group));    // ²H¤J¸ü¤Jµe­±
+        yield return StartCoroutine(FadeSystem.Fade(group));    // æ·¡å…¥è¼‰å…¥ç•«é¢
 
-        AsyncOperation asyncOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName); // ¶}©l«D¦P¨B¸ü¤J«ü©w³õ´º¨Ã¥BÀò±o¸ü¤J¸ê°T AsyncOperation
-        asyncOperation.allowSceneActivation = false;                                                        // ¨¾¤î¦Û°Ê±Ò°Ê³õ´º
+        AsyncOperation asyncOperation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName); // é–‹å§‹éåŒæ­¥è¼‰å…¥æŒ‡å®šå ´æ™¯ä¸¦ä¸”ç²å¾—è¼‰å…¥è³‡è¨Š AsyncOperation
+        asyncOperation.allowSceneActivation = false;                                                        // é˜²æ­¢è‡ªå‹•å•Ÿå‹•å ´æ™¯
 
-        while (!asyncOperation.isDone)                                          // ¦b³õ´º¸ü¤J®É§ó·sUI
+        while (!asyncOperation.isDone)                                          // åœ¨å ´æ™¯è¼‰å…¥æ™‚æ›´æ–°UI
         {
-            float progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);     // ­pºâ¸ü¤J¶i«×&#xff08;0¨ì0.9¡AµM«á¦b§¹¦¨®É¬°1&#xff09;
-            if (percentageText != null)                                         // §ó·s¦Ê¤À¤ñ¤å¦r©M¸ü¤J±ø¶ñ¥R¶q
+            float progress = Mathf.Clamp01(asyncOperation.progress / 0.9f);     // è¨ˆç®—è¼‰å…¥é€²åº¦&#xff08;0åˆ°0.9ï¼Œç„¶å¾Œåœ¨å®Œæˆæ™‚ç‚º1&#xff09;
+            if (percentageText != null)                                         // æ›´æ–°ç™¾åˆ†æ¯”æ–‡å­—å’Œè¼‰å…¥æ¢å¡«å……é‡
                 percentageText.text = $"{Mathf.RoundToInt(progress * 100)}%";
             if (loadingBar != null)
                 loadingBar.fillAmount = progress;
-            if (asyncOperation.progress >= 0.9f)                                // ¦b§¹¥ş¸ü¤J®É±Ò°Ê³õ´º
+            if (asyncOperation.progress >= 0.9f)                                // åœ¨å®Œå…¨è¼‰å…¥æ™‚å•Ÿå‹•å ´æ™¯
                 asyncOperation.allowSceneActivation = true;
-            yield return null;                                                  // µ¥«İ¤U¤@´V null
+            yield return null;                                                  // ç­‰å¾…ä¸‹ä¸€å¹€ null
         }
     }
 }

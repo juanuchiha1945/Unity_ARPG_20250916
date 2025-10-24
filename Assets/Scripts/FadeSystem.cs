@@ -1,24 +1,24 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections;
 
 public class FadeSystem : MonoBehaviour
 {
     /// <summary>
-    /// ±±¨î Canvas Group ²H¤J©Î²H¥X
+    /// æ§åˆ¶ Canvas Group æ·¡å…¥æˆ–æ·¡å‡º
     /// </summary>
     public static IEnumerator Fade(CanvasGroup group, bool fadeIn = true, float interval = 0.03f)
     {
-        // ¦pªG fadeIn ¬° true¡A´NÅı³z©ú«×¨C¦¸¥[ 0.1f¡F§_«h¨C¦¸´î 0.1f
+        // å¦‚æœ fadeIn ç‚º trueï¼Œå°±è®“é€æ˜åº¦æ¯æ¬¡åŠ  0.1fï¼›å¦å‰‡æ¯æ¬¡æ¸› 0.1f
         var increase = fadeIn ? +0.1f : -0.1f;
 
-        // ¶i¦æ 10 ¦¸ªº²H¤J©Î²H¥X
+        // é€²è¡Œ 10 æ¬¡çš„æ·¡å…¥æˆ–æ·¡å‡º
         for (int i = 0; i < 10; i++)
         {
-            group.alpha += increase;                     // ½Õ¾ã³z©ú«×
-            yield return new WaitForSeconds(interval);   // µ¥«İ«ü©wªº®É¶¡¶¡¹j
+            group.alpha += increase;                     // èª¿æ•´é€æ˜åº¦
+            yield return new WaitForSeconds(interval);   // ç­‰å¾…æŒ‡å®šçš„æ™‚é–“é–“éš”
         }
 
-        // ³Ì«á³]©w¤¬°Ê»P¾B¾×®g½u
+        // æœ€å¾Œè¨­å®šäº’å‹•èˆ‡é®æ“‹å°„ç·š
         group.interactable = fadeIn;
         group.blocksRaycasts = fadeIn;
     }

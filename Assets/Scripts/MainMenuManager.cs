@@ -1,20 +1,20 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
-// Ä~©Ó MonoBehaviour ¤¹³\¦¹Ãş§O±¾¦b¹CÀ¸ª«¥ó¤W
+// ç¹¼æ‰¿ MonoBehaviour å…è¨±æ­¤é¡åˆ¥æ›åœ¨éŠæˆ²ç‰©ä»¶ä¸Š
 /// <summary>
-/// ¥D¿ï³æºŞ²z¾¹
-/// Ä~Äò¹CÀ¸¡B¶}©l¹CÀ¸¡B¿ï¶µ¡B»s§@¹Î¶¤»P°h¥X«ö¶s
+/// ä¸»é¸å–®ç®¡ç†å™¨
+/// ç¹¼çºŒéŠæˆ²ã€é–‹å§‹éŠæˆ²ã€é¸é …ã€è£½ä½œåœ˜éšŠèˆ‡é€€å‡ºæŒ‰éˆ•
 /// <summary>
 public class MainMenuManager : MonoBehaviour 
 {
-    //private ¥Nªí¥u¯à¦b¦¹Ãş§O¤º¦s¨ú¨ÃÁôÂÃ
-    // ¤¹³\¦b Unity ½s¿è¾¹¤¤³]¸m¨p¦³ÅÜ¼Æ
-    [SerializeField] private Button btnLord;     //Ä~Äò¹CÀ¸«ö¶s 
-    [SerializeField] private Button btnNew;      //¶}©l¹CÀ¸«ö¶s 
-    [SerializeField] private Button btnOption;   //¿ï¶µ«ö¶s 
-    [SerializeField] private Button btnCredit;   //»s§@¹Î¶¤«ö¶s
-    [SerializeField] private Button btnQuit;     //°h¥X«ö¶s
+    //private ä»£è¡¨åªèƒ½åœ¨æ­¤é¡åˆ¥å…§å­˜å–ä¸¦éš±è—
+    // å…è¨±åœ¨ Unity ç·¨è¼¯å™¨ä¸­è¨­ç½®ç§æœ‰è®Šæ•¸
+    [SerializeField] private Button btnLord;     //ç¹¼çºŒéŠæˆ²æŒ‰éˆ• 
+    [SerializeField] private Button btnNew;      //é–‹å§‹éŠæˆ²æŒ‰éˆ• 
+    [SerializeField] private Button btnOption;   //é¸é …æŒ‰éˆ• 
+    [SerializeField] private Button btnCredit;   //è£½ä½œåœ˜éšŠæŒ‰éˆ•
+    [SerializeField] private Button btnQuit;     //é€€å‡ºæŒ‰éˆ•
     [SerializeField] private Button btnBackOption;
     [SerializeField] private Button btnBackCredit;
     [SerializeField] private CanvasGroup groupOption;
@@ -23,22 +23,22 @@ public class MainMenuManager : MonoBehaviour
     private void Awake()
     {
         //Debug.Log("Hello world");
-        //¬°«ö¶s²K¥[ÂIÀ»¨Æ¥óºÊÅ¥¾¹
-        //¨Ï¥Î Lambda ªí¹F¦¡¨Ó½Õ¥Î¤èªk
-        //StartCoroutine ¥Î©ó±Ò°Ê¨óµ{
-        //±±¨î¤¶­±ªº²H¤J»P²H¥X
+        //ç‚ºæŒ‰éˆ•æ·»åŠ é»æ“Šäº‹ä»¶ç›£è½å™¨
+        //ä½¿ç”¨ Lambda è¡¨é”å¼ä¾†èª¿ç”¨æ–¹æ³•
+        //StartCoroutine ç”¨æ–¼å•Ÿå‹•å”ç¨‹
+        //æ§åˆ¶ä»‹é¢çš„æ·¡å…¥èˆ‡æ·¡å‡º
         btnOption.onClick.AddListener(() => StartCoroutine(FadeSystem.Fade(groupOption, interval: 0.05f)));
         btnBackOption.onClick.AddListener(() => StartCoroutine(FadeSystem.Fade(groupOption, false)));
         btnCredit.onClick.AddListener(() => StartCoroutine(FadeSystem.Fade(groupCredit, interval: 0.05f)));
         btnBackCredit.onClick.AddListener(() => StartCoroutine(FadeSystem.Fade(groupCredit, false)));
-        // ÂIÀ»°h¥X«ö¶s®É¡A°h¥XÀ³¥Îµ{¦¡
-        // Application.Quit() ·|¦b½s¿è¾¹¤¤°±¤î¼½©ñ¼Ò¦¡¡A¦b¥´¥]«áªºÀ³¥Îµ{¦¡¤¤°h¥XÀ³¥Îµ{¦¡
+        // é»æ“Šé€€å‡ºæŒ‰éˆ•æ™‚ï¼Œé€€å‡ºæ‡‰ç”¨ç¨‹å¼
+        // Application.Quit() æœƒåœ¨ç·¨è¼¯å™¨ä¸­åœæ­¢æ’­æ”¾æ¨¡å¼ï¼Œåœ¨æ‰“åŒ…å¾Œçš„æ‡‰ç”¨ç¨‹å¼ä¸­é€€å‡ºæ‡‰ç”¨ç¨‹å¼
         btnQuit.onClick.AddListener(() =>
         {
             Application.Quit();
-            Debug.Log("<color=#ff3>°h¥X¹CÀ¸</color>");
+            Debug.Log("<color=#ff3>é€€å‡ºéŠæˆ²</color>");
         });
-        // ÂI§Y¶}©l¹CÀ¸«ö¶s®É¡A¸ü¤J¹CÀ¸³õ´º
-        btnNew.onClick.AddListener(() => SceneLoader.instacne.LoadSceneAsync("¹CÀ¸³õ´º"));
+        // é»å³é–‹å§‹éŠæˆ²æŒ‰éˆ•æ™‚ï¼Œè¼‰å…¥éŠæˆ²å ´æ™¯
+        btnNew.onClick.AddListener(() => SceneLoader.instacne.LoadSceneAsync("éŠæˆ²å ´æ™¯"));
     }
 }
