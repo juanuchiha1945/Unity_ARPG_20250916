@@ -1577,6 +1577,21 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &1059389774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059389771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a14d4011ae3329c47870744d96510771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  <walkSoeed>k__BackingField: 2.5
+  <runSoeed>k__BackingField: 5
+  <jumpHeight>k__BackingField: 7.5
 --- !u!1001 &1134539987
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2089,6 +2104,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 710767f33357e7746886ce660d34ff9d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1059389773}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 710767f33357e7746886ce660d34ff9d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1059389774}
   m_SourcePrefab: {fileID: 100100000, guid: 710767f33357e7746886ce660d34ff9d, type: 3}
 --- !u!1001 &1471347124
 PrefabInstance:
