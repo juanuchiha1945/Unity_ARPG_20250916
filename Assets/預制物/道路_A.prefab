@@ -57,6 +57,10 @@ PrefabInstance:
       value: "\u9053\u8DEF_A"
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 75ed50d25f1f407458e9d48c36228c09, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 75ed50d25f1f407458e9d48c36228c09, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -80,7 +84,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8266177549206013951}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: eab4712c6c7dcb445ad0b853c41e6525, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

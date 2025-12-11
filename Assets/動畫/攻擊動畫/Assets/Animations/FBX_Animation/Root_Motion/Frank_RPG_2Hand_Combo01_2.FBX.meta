@@ -504,7 +504,7 @@ ModelImporter:
     second: root
   - first:
       74: 7400000
-    second: "\u653B\u64CA\u9023\u6BB5_2"
+    second: "\u653B\u64CA\u9023\u6BB5_1_2"
   - first:
       95: 9500000
     second: //RootNode
@@ -558,7 +558,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: "\u653B\u64CA\u9023\u6BB5_2"
+      name: "\u653B\u64CA\u9023\u6BB5_1_2"
       takeName: Take 001
       internalID: 7400000
       firstFrame: 0
@@ -571,8 +571,8 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
