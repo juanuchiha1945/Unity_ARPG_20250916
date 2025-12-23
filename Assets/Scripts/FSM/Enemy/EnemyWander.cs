@@ -1,7 +1,7 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ¼Ä¤H¹C¨«
+/// æ•µäººéŠèµ°
 /// </summary>
 public class EnemyWander : EnemyState
 {
@@ -15,13 +15,13 @@ public class EnemyWander : EnemyState
     {
         base.Enter();
 
-        // ³]©w¹C¨«¥Ø¼ĞÂI
+        // è¨­å®šéŠèµ°ç›®æ¨™é»
         enemy.SetWanderTarget();
 
-        // ¦b¹C¨«®É¶¡½d³ò¤ºÀH¾÷¤@­Ó®É¶¡
+        // åœ¨éŠèµ°æ™‚é–“ç¯„åœå…§éš¨æ©Ÿä¸€å€‹æ™‚é–“
         wanderTime = Random.Range(enemy.wanderTimeRange.x, enemy.wanderTimeRange.y);
 
-        Debug.Log($"<color=#f7f>¹C¨«®É¶¡¡G{wanderTime}</color>");
+        // Debug.Log($"<color=#f7f>éŠèµ°æ™‚é–“ï¼š{wanderTime}</color>");
     }
 
     public override void Exit()
@@ -33,9 +33,12 @@ public class EnemyWander : EnemyState
     {
         base.Update();
 
-        #region ±ø¥ó°Ï°ì
-        // ¦pªG­p®É¾¹¤j©ó¹C¨«®É¶¡´N¤Á´«¨ì«İ¾÷ª¬ºA
+        #region æ¢ä»¶å€åŸŸ
+        // å¦‚æœè¨ˆæ™‚å™¨å¤§æ–¼éŠèµ°æ™‚é–“å°±åˆ‡æ›åˆ°å¾…æ©Ÿç‹€æ…‹
         if (timer >= wanderTime) stateMachine.SwitchState(enemy.idle);
+        
+        // å¦‚æœç©å®¶é€²å…¥è¿½è¹¤ç¯„åœå°±åˆ‡æ›åˆ°è¿½è¹¤æ¨¡å¼
+        if (enemy.CheckPlayerInTrackRange()) stateMachine.SwitchState(enemy.track);
         #endregion
     }
 }

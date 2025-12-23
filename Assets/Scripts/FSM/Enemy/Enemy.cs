@@ -1,28 +1,46 @@
+ï»¿using System.Linq.Expressions;
 using UnityEngine;
+using UnityEngine.AI;
 
 /// <summary>
-/// ¼Ä¤H
+/// æ•µäºº
 /// </summary>
 public class Enemy : Character
 {
-    #region ¸ê®Æ
-    [field: Header("¼Ä¤H¸ê®Æ")]
+    #region è³‡æ–™
+    [field: Header("æ•µäººè³‡æ–™")]
     [field: SerializeField]
     public Vector2 idleTimeRange { get; private set; } = new Vector2(1f, 3f);
     [field: SerializeField]
     public Vector2 wanderTimeRange { get; private set; } = new Vector2(3f, 5f);
-    [SerializeField, Tooltip("¹C¨«ªº¤¤¤ßÂI")]
+    [SerializeField, Tooltip("éŠèµ°ä¸­å¿ƒé»")]
     private Vector3 wanderCenter;
-    [SerializeField, Tooltip("¹C¨«ªº¥b®|"), Range(0, 7)]
+    [SerializeField, Tooltip("éŠèµ°åŠå¾‘"), Range(0, 7)]
     private float wanderRadius = 5;
+    [SerializeField, Tooltip("è¿½è¹¤åŠå¾‘"), Range(0, 15)]
+    private float trackRadius = 6.5f;
+    [field: SerializeField, Range(0, 10)]
+    public float trackSpeed { get; private set; } = 5f;
+    [field: SerializeField, Range(0, 5)]
+    public float attackRadius { get; private set; } = 1.5f;
+    [field: SerializeField, Range(0, 15)]
+    public float turnSpeed { get; private set; } = 3f;
+    [field: SerializeField, Range(0, 5)]
+    public float attackCD { get; private set; } = 3f;
+
+    
 
     /// <summary>
-    /// ¹C¨«ªº¥Ø¼ĞÂI
+    /// éŠèµ°çš„ç›®æ¨™é»
     /// </summary>
-    private Vector3 wanderTarget;
+    public Vector3 wanderTarget { get; private set; }
+    public NavMeshAgent agent { get; private set; }
+    public Transform traPlayer { get; private set; }
+
+    private LayerMask targetLayer = 1 << 7; // ç›®æ¨™åœ–å±¤
     #endregion
 
-    #region ª¬ºA¾÷
+    #region ç‹€æ…‹æ©Ÿ
     public EnemyIdle idle { get; private set; }
     public EnemyWander wander { get; private set; }
     public EnemyTrack track { get; private set; }
@@ -31,7 +49,7 @@ public class Enemy : Character
     #endregion
 
     /// <summary>
-    /// ¿ï¨úª«¥ó®ÉÃ¸»s¹Ï¥Ü
+    /// é¸å–ç‰©ä»¶æ™‚ç¹ªè£½åœ–ç¤º
     /// </summary>
     private void OnDrawGizmosSelected()
     {
@@ -40,36 +58,70 @@ public class Enemy : Character
 
         Gizmos.color = new Color(0.5f, 0.3f, 1, 0.8f);
         Gizmos.DrawSphere(wanderTarget, 0.7f);
+
+        Gizmos.color = new Color(1, 0.6f, 0.6f, 0.3f);
+        Gizmos.DrawSphere(wanderCenter, trackRadius);
     }
 
     protected override void Awake()
     {
         base.Awake();
 
-        // ª¬ºA¾÷ªì©l¤Æ
+        agent = GetComponent<NavMeshAgent>();
+        traPlayer = GameObject.Find("çµäºº").transform;
+
+        // ç‹€æ…‹æ©Ÿåˆå§‹åŒ–
         stateMachine = new StateMachine();
-        // ¹ê¨Ò¤Æª¬ºA
-        idle = new EnemyIdle(this, stateMachine, $"{name} «İ¾÷");
-        wander = new EnemyWander(this, stateMachine, $"{name} ¨µÅŞ");
-        track = new EnemyTrack(this, stateMachine, $"{name} °lÂÜ");
-        attack = new EnemyAttack(this, stateMachine, $"{name} §ğÀ»");
-        dead = new EnemyDead(this, stateMachine, $"{name} ¦º¤`");
-        // ª¬ºA¾÷±Ò°Ê
+        // å¯¦ä¾‹åŒ–ç‹€æ…‹
+        idle = new EnemyIdle(this, stateMachine, $"{name} å¾…æ©Ÿ");
+        wander = new EnemyWander(this, stateMachine, $"{name} å·¡é‚");
+        track = new EnemyTrack(this, stateMachine, $"{name} è¿½è¹¤");
+        attack = new EnemyAttack(this, stateMachine, $"{name} æ”»æ“Š");
+        dead = new EnemyDead(this, stateMachine, $"{name} æ­»äº¡");
+        // ç‹€æ…‹æ©Ÿå•Ÿå‹•
         stateMachine.Initialize(idle);
     }
 
     private void Update()
     {
         stateMachine.Update();
+
+        // Debug.Log($"<color=#6f6>ç©å®¶æ˜¯å¦åœ¨è¿½è¹¤ç¯„åœå…§{CheckPlayerInTrackRange()}</color>"); 
     }
 
     /// <summary>
-    /// Àò±o¹C¨«¥Ø¼ĞÂI
+    /// ç²å¾—éŠèµ°ç›®æ¨™é»
     /// </summary>
     public void SetWanderTarget()
     {
-        // ¦b¶ê§Î½d³ò¤ºÀH¾÷¿ï¨ú¤@­ÓÂI§@¬°¹C¨«¥Ø¼ĞÂI
+        // åœ¨åœ“å½¢ç¯„åœå…§éš¨æ©Ÿé¸å–ä¸€å€‹é»ä½œç‚ºéŠèµ°ç›®æ¨™é»
         Vector2 randomPoint = Random.insideUnitCircle * wanderRadius;
         wanderTarget = wanderCenter + new Vector3(randomPoint.x, 0, randomPoint.y);
+        // åˆ¤æ–·æ˜¯å¦åœ¨å°è¦½ç¶²æ ¼å…§
+        if (NavMesh.SamplePosition(wanderTarget, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+            wanderTarget = hit.position;
+    }
+
+    /// <summary>
+    /// æª¢æŸ¥ç©å®¶æ˜¯å¦åœ¨è¿½è¹¤ç¯„åœå…§
+    /// </summary>
+    public bool CheckPlayerInTrackRange()
+    {
+        // ä»¥éŠèµ°ä¸­å¿ƒé»ç‚ºåœ“å¿ƒï¼Œè¿½è¹¤åŠå¾‘ç‚ºåŠå¾‘ï¼Œæª¢æŸ¥ç›®æ¨™åœ–å±¤æ˜¯å¦æœ‰ç›®æ¨™ç‰©ä»¶
+        Collider[] results = Physics.OverlapSphere(
+            wanderCenter, trackRadius, targetLayer);
+        return results.Length > 0;
+    }
+
+    /// <summary>
+    /// é¢å‘ç©å®¶
+    /// </summary>
+    public void LookAtPlayer()
+    {
+        Vector3 direction = (traPlayer.position - transform.position).normalized;
+        direction.y = 0;
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation,
+            lookRotation, Time.deltaTime * turnSpeed);
     }
 }

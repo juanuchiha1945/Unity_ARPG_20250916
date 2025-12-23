@@ -1,7 +1,7 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ¼Ä¤H«İ¾÷
+/// æ•µäººå¾…æ©Ÿ
 /// </summary>
 public class EnemyIdle : EnemyState
 {
@@ -15,12 +15,12 @@ public class EnemyIdle : EnemyState
     {
         base.Enter();
 
-        // ¦b«İ¾÷®É¶¡½d³ò¤ºÀH¾÷¤@­Ó®É¶¡
-        // Random.Range(³Ì¤p­È, ³Ì¤j­È)
-        // Random.Range(1f, 3f) ·|¦^¶Ç 1 ~ 3 ¤§¶¡ªºÀH¾÷¯BÂI¼Æ
+        // åœ¨å¾…æ©Ÿæ™‚é–“ç¯„åœå…§éš¨æ©Ÿä¸€å€‹æ™‚é–“
+        // Random.Range(æœ€å°å€¼, æœ€å¤§å€¼)
+        // Random.Range(1f, 3f) æœƒå›å‚³ 1 ~ 3 ä¹‹é–“çš„éš¨æ©Ÿæµ®é»æ•¸
         idleTime = Random.Range(enemy.idleTimeRange.x, enemy.idleTimeRange.y);
 
-        Debug.Log($"<color=#f7f>«İ¾÷®É¶¡¡G{idleTime}</color>");
+        // Debug.Log($"<color=#f7f>å¾…æ©Ÿæ™‚é–“ï¼š{idleTime}</color>");
     }
 
     public override void Exit()
@@ -32,9 +32,12 @@ public class EnemyIdle : EnemyState
     {
         base.Update();
 
-        #region ±ø¥ó°Ï°ì
-        // ¦pªG­p®É¾¹¤j©ó«İ¾÷®É¶¡´N¤Á´«¨ì¹C¨«ª¬ºA
+        #region æ¢ä»¶å€åŸŸ
+        // å¦‚æœè¨ˆæ™‚å™¨å¤§æ–¼å¾…æ©Ÿæ™‚é–“å°±åˆ‡æ›åˆ°éŠèµ°ç‹€æ…‹
         if (timer >= idleTime) stateMachine.SwitchState(enemy.wander);
         #endregion
+
+        // å¦‚æœç©å®¶é€²å…¥è¿½è¹¤ç¯„åœå°±åˆ‡æ›åˆ°è¿½è¹¤ç‹€æ…‹
+        if (enemy.CheckPlayerInTrackRange()) stateMachine.SwitchState(enemy.track);
     }
 }
