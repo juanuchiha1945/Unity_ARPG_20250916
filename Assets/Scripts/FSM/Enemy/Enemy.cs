@@ -1,6 +1,10 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections;
+using System.Linq.Expressions;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
+using static CartoonFX.CFXR_Effect;
 
 /// <summary>
 /// 敵人
@@ -28,7 +32,7 @@ public class Enemy : Character
     [field: SerializeField, Range(0, 5)]
     public float attackCD { get; private set; } = 3f;
 
-    
+
 
     /// <summary>
     /// 遊走的目標點
@@ -48,6 +52,28 @@ public class Enemy : Character
     public EnemyDead dead { get; private set; }
     #endregion
 
+    [SerializeField]
+    private GameObject prefabHp;
+
+    /// <summary>
+    /// 群組_所有敵人的血條
+    /// </summary>
+    private Transform rootHp;
+
+    private UIFollow3DObject uiFollow3DObject;
+
+    [field: SerializeField]
+    public CanvasGroup groupHp { get; private set; }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // 如果碰撞到玩家的攻擊物件就造成傷害
+        if (other.TryGetComponent(out AttackObjectPlayer attackObject))
+        {
+            Damage(attackObject.attackPower);
+        }
+    }
+
     /// <summary>
     /// 選取物件時繪製圖示
     /// </summary>
@@ -65,10 +91,25 @@ public class Enemy : Character
 
     protected override void Awake()
     {
+
+        rootHp = GameObject.Find("群組_所有敵人的血條").transform;
+        GameObject tempHp = Instantiate(prefabHp, rootHp);
+        imgHp = tempHp.transform.Find("圖片_血條_敵人").GetComponent<Image>();
+        texHp = tempHp.transform.Find("文字_血量_敵人").GetComponent<TMP_Text>();
+        groupHp = tempHp.GetComponent<CanvasGroup>();
+        uiFollow3DObject = tempHp.GetComponent<UIFollow3DObject>();
+        uiFollow3DObject.UpdateTargetAndOffset(transform, new Vector3(0, 2.5f, 0));
+
         base.Awake();
 
         agent = GetComponent<NavMeshAgent>();
         traPlayer = GameObject.Find("獵人").transform;
+
+        // 訂閱玩家死亡事件 並切換到待機狀態
+        Player.instance.onDead += () =>
+        {
+            stateMachine.SwitchState(idle);
+        };
 
         // 狀態機初始化
         stateMachine = new StateMachine();
@@ -123,5 +164,21 @@ public class Enemy : Character
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation,
             lookRotation, Time.deltaTime * turnSpeed);
+    }
+
+    protected override void Damage(float damage)
+    {
+        base.Damage(damage);
+        if(hp <= 0) return;
+        StartCoroutine(FadeSystem.Fade(groupHp));
+        CameraShake.instance.ShakeCamera(0.2f, 7, 10f);
+        StartCoroutine(DamageEffect(0.3f, 0.2f));
+    }
+
+    protected override void Dead()
+    {
+        base.Dead();
+        StopAllCoroutines();    // 停止所有協程 (例如受傷閃爍)
+        StartCoroutine(FadeSystem.Fade(groupHp, false));
     }
 }

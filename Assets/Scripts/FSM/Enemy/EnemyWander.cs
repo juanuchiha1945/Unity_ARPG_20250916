@@ -39,6 +39,7 @@ public class EnemyWander : EnemyState
         
         // 如果玩家進入追蹤範圍就切換到追蹤模式
         if (enemy.CheckPlayerInTrackRange()) stateMachine.SwitchState(enemy.track);
+        else enemy.StartCoroutine(FadeSystem.Fade(enemy.groupHp, false));
         #endregion
     }
 }

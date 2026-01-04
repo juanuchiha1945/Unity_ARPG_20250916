@@ -1,10 +1,24 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// 玩家類別 : 紀錄玩家資料與相關功能
 /// </summary>
 public class Player : Character
 {
+    private static Player _instance;
+
+    public static Player instance
+    {
+        get
+        {
+            if(_instance == null) _instance = FindAnyObjectByType<Player>();
+            return _instance;
+        }
+    }
+
+    public event Action onDead;
+
     #region 玩家屬性
     // 唯讀屬性 : 讓外部取得此資料窗口但不能修改
     // 序列化 : 讓私有欄位可以在編輯器中顯示與修改
@@ -35,7 +49,7 @@ public class Player : Character
     #endregion
 
     #region 狀態資料
-    public StateMachine stateMachine { get; private set; }
+    
     public PlayerIdle idle { get; private set; }
     public PlayerWalk walk { get; private set; }
     public PlayerRun run { get; private set; }
@@ -64,6 +78,15 @@ public class Player : Character
         Gizmos.DrawSphere(
             transform.position + new Vector3(0, checkGroundOffsetY, 0),
             checkGroundRadius);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // 如果碰到物件 嘗試取得敵人攻擊物件 有資料 就造成傷害
+        if (other.TryGetComponent(out AttackObjectEnemy attackObject))
+        {
+            Damage(attackObject.attackPower);
+        }
     }
 
     protected override void Awake()
@@ -157,4 +180,19 @@ public class Player : Character
             stateMachine.SwitchState(attack);
         }
     }
+
+    protected override void Damage(float damage)
+    {
+        base.Damage(damage);
+        CameraShake.instance.ShakeCamera(0.2f, 5, 10f);
+        StartCoroutine(DamageEffect(0.5f, 0.2f));
+    }
+
+    protected override void Dead()
+    {
+        base.Dead();
+        gameObject.layer = 0;
+        onDead?.Invoke();
+    }
+
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 // 繼承 MonoBehaviour 允許此類別掛在遊戲物件上
 /// <summary>
@@ -39,6 +40,6 @@ public class MainMenuManager : MonoBehaviour
             Debug.Log("<color=#ff3>退出遊戲</color>");
         });
         // 點即開始遊戲按鈕時，載入遊戲場景
-        btnNew.onClick.AddListener(() => SceneLoader.instacne.LoadSceneAsync("遊戲場景"));
+        btnNew.onClick.AddListener(() => SceneManager.LoadSceneAsync("遊戲場景"));
     }
 }
