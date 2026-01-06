@@ -185,6 +185,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}
+      propertyPath: m_TagString
+      value: "\u6575\u4EBA"
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: be3776e9bd6e31341b3490a035f6ea50, type: 3}
       propertyPath: m_Controller
       value: 
@@ -293,7 +297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   <walkSpeed>k__BackingField: 2.5
-  hpMax: 100
+  maxHp: 100
   imgHp: {fileID: 0}
   texHp: {fileID: 0}
   <idleTimeRange>k__BackingField: {x: 1, y: 3}
@@ -305,7 +309,8 @@ MonoBehaviour:
   <attackRadius>k__BackingField: 2
   <turnSpeed>k__BackingField: 3
   <attackCD>k__BackingField: 1.51
-  groupHp: {fileID: 0}
+  prefabHp: {fileID: 0}
+  <groupHp>k__BackingField: {fileID: 0}
 --- !u!114 &8933880442576376839
 MonoBehaviour:
   m_ObjectHideFlags: 0

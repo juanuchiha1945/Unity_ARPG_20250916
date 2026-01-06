@@ -193,6 +193,12 @@ public class Player : Character
         base.Dead();
         gameObject.layer = 0;
         onDead?.Invoke();
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        GameFlowManager.instance.ShowFinish("你死了！");
     }
+
+    
 
 }

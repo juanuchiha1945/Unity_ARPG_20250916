@@ -13,7 +13,7 @@ public abstract class Character : MonoBehaviour
     [field: SerializeField, Range(0, 10)]
     public float walkSpeed { get; private set; } = 2.5f;
     [SerializeField, Range(0, 500)]
-    protected float hpMax = 100;
+    protected float maxHp = 100;
 
     protected float hp;
 
@@ -35,24 +35,40 @@ public abstract class Character : MonoBehaviour
     {
         ani = GetComponent<Animator>();     // 取得動畫元件
         rig = GetComponent<Rigidbody>();    // 取得剛體元件
-        hp = hpMax;                         // 血量等於最大血量
-        texHp.text = $"{hp} / {hpMax}";     // 更新血量文字
+        hp = maxHp;                         // 血量等於最大血量
+        if (texHp != null)
+        {
+            texHp.text = hp.ToString();
+        }
     }
 
     /// <summary>
     /// 受傷
     /// </summary>
-    /// <param name="damage">傷害值</param>
+    /// <param name="damage">接收到的傷害值</param>
     protected virtual void Damage(float damage)
     {
-        hp -= damage;                       // 扣血
-        hp = Mathf.Clamp(hp, 0, hpMax);     // 將血量夾在 0 ~ 最大值 之間
-        imgHp.fillAmount = hp / hpMax;      // 更新血條
-        texHp.text = $"{hp} / {hpMax}";     // 更新血量文字  
-        if (hp <= 0) Dead();                // 死亡
+        hp -= damage;
 
-        Debug.Log($"<color=#66f>{gameObject.name} 剩餘血量：{hp}</color>");
+        // 限制血量不會低於 0 (為了美觀)
+        if (hp < 0) hp = 0;
 
+        if (hp <= 0) Dead();
+
+        // --- 更新 UI 的部分 ---
+
+        // 1. 更新文字
+        if (texHp != null)
+        {
+            texHp.text = hp.ToString();
+        }
+
+        // 2. 更新血條圖片 (這是關鍵！)
+        if (imgHp != null && maxHp > 0)
+        {
+            // 目前血量 / 最大血量 = 剩餘百分比 (0 ~ 1)
+            imgHp.fillAmount = hp / maxHp;
+        }
     }
 
     /// <summary>

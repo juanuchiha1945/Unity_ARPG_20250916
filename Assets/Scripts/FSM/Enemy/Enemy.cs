@@ -94,8 +94,8 @@ public class Enemy : Character
 
         rootHp = GameObject.Find("群組_所有敵人的血條").transform;
         GameObject tempHp = Instantiate(prefabHp, rootHp);
-        imgHp = tempHp.transform.Find("圖片_血條_敵人").GetComponent<Image>();
-        texHp = tempHp.transform.Find("文字_血量_敵人").GetComponent<TMP_Text>();
+        imgHp = tempHp.transform.Find("圖片血條敵人").GetComponent<Image>();
+        texHp = tempHp.transform.Find("文字血量").GetComponent<TMP_Text>();
         groupHp = tempHp.GetComponent<CanvasGroup>();
         uiFollow3DObject = tempHp.GetComponent<UIFollow3DObject>();
         uiFollow3DObject.UpdateTargetAndOffset(transform, new Vector3(0, 2.5f, 0));
